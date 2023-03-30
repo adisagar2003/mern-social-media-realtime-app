@@ -53,7 +53,7 @@ app.get('/test',(req,res)=>{
 });
 
 app.get('/',(req,res)=>{
-    res.send("Hello");
+    res.send("<h1>Chat App Backend </h1>");
 })
 
 
