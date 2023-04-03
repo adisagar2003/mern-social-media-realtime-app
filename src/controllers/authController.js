@@ -27,6 +27,7 @@ module.exports = {
                                 "userName": targetUser.userName,
                                 "email": targetUser.email,
                                 "created_at": targetUser.created_at,
+                                "avatar": targetUser.avatar
 
                             }
                         });

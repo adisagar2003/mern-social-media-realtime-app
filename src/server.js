@@ -14,7 +14,6 @@ const messageModel = require("./models/messageModel.js");
  const server = http.createServer(app);
 require('dotenv').config();
 
-
 //Connecting database
 connectDb();
 
