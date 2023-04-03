@@ -15,6 +15,7 @@ module.exports = {
                     console.log(result);
                     if (result){
                         const token =   jwt.sign({userName:targetUser.id, role: targetUser.role}, '123');
+                        console.log(targetUser.avatar);
                         res.set('Authorization',`Bearer ${token}`);
                         res.status(220).json({
                             response:'success',

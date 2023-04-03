@@ -17,6 +17,7 @@ const userSchema = new Schema({
   confirmPassword:{type:String},
   email:{type:String},
   created_at: { type: Date, default: Date.now },
-  conversations:[{type:mongoose.Schema.Types.ObjectId, default:[], ref:'Conversation',unique:false}]
+  conversations:[{type:mongoose.Schema.Types.ObjectId, default:[], ref:'Conversation',unique:false}],
+  avatar:{type:String}
 });
 module.exports = mongoose.model('User',userSchema);
