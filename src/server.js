@@ -7,6 +7,7 @@ const connectDb = require('./utils/dbConn');
 const checkAdmin = require('./middlewares/checkAdmin');
 const conversationRouter = require('./routes/conversationRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const postRouter = require('./routes/postRoutes');
 const http = require('http');
 const {Server} = require("socket.io");
 const conversationModel = require("./models/conversationModel.js");
@@ -57,8 +58,10 @@ app.get('/',(req,res)=>{
 
 
 //Routes 
+
 app.use('/user',userRouter);
 app.use('/auth',authRouter);
+app.use('/post', postRouter);
 app.use('/conversation',conversationRouter);
 app.use('/messages', messageRoutes);
 server.listen(process.env.PORT||3300, ()=>{
