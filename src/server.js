@@ -10,8 +10,10 @@ const messageRoutes = require('./routes/messageRoutes');
 const postRouter = require('./routes/postRoutes');
 const http = require('http');
 const {Server} = require("socket.io");
+const multer  = require('multer');
 const conversationModel = require("./models/conversationModel.js");
 const messageModel = require("./models/messageModel.js");
+const upload = multer({ dest: 'uploads/' });
  const server = http.createServer(app);
 require('dotenv').config();
 
@@ -22,6 +24,7 @@ connectDb();
 
 //Passing Middlewares
 app.use(cors());
+app.use('/uploads',express.static('uploads'))
 app.use(express.json());
 
 const io = new Server(server, {

@@ -1,5 +1,6 @@
 const postModel = require("../models/postModel")
 const jwt = require('jsonwebtoken');
+
 module.exports={
     getPosts:async (req,res)=>{
         const posts = await postModel.find(req.params);
@@ -11,6 +12,9 @@ module.exports={
     },
     createPost:async (req,res)=>{
         const token = req.headers.authorization.split(' ')[1];
+        console.log(req.file);
+        var fullUrl = req.protocol + '://' + req.get('host');
+        console.log(`${fullUrl}/${req.file.path}`);
         const decoded = jwt.verify(token,'123',function(err,decoded){
             if (err){
                 throw new Error(err);
@@ -22,7 +26,7 @@ module.exports={
       postHeading: req.body.postHeading,
       ownerName: req.body.ownerName,
     description:req.body.description,
-      imageSource:req.body.imageSource,
+      imageSource:`${fullUrl}/${req.file.path}`,
       creatorId: decoded
         }
         const post = new postModel(postData);
@@ -31,5 +35,8 @@ module.exports={
             resposne:'success',
             data: post
         })
+    },
+    deletePost:async (req,res)=>{  
+        
     }
 }
