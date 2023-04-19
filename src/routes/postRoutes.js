@@ -4,7 +4,15 @@ const { createPost, getPosts } = require('../controllers/postController');
 const router  = express.Router();
 const multer  = require('multer');
 
-const upload = multer({dest:'uploads/'});
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function(req, file, cb) {
+      cb(null, file.originalname + '-' + Date.now() + '.jpg');
+    }
+  });
+const upload = multer({storage});
 
 router.get('/',getPosts);
 router.post('/',checkAdmin,upload.single('image'),createPost);

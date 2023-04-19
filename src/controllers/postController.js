@@ -1,8 +1,9 @@
 const postModel = require("../models/postModel")
 const jwt = require('jsonwebtoken');
-
+var path = require('path')
 module.exports={
     getPosts:async (req,res)=>{
+
         const posts = await postModel.find(req.params);
         res.status(400).json({
             data: posts,
@@ -22,12 +23,16 @@ module.exports={
             }else{
                 return decoded.userName;
             }});
+        const fileUploaded = req.file
+        const fileUploadedExtension = fileUploaded.originalname.split('.')[1];
+        console.log(fileUploadedExtension);
+       
         const postData ={
-      postHeading: req.body.postHeading,
-      ownerName: req.body.ownerName,
-    description:req.body.description,
-      imageSource:`${fullUrl}/${req.file.path}`,
-      creatorId: decoded
+            postHeading: req.body.postHeading,
+            ownerName: req.body.ownerName,
+            description:req.body.description,
+            imageSource:`${fullUrl}/${req.file.path}`,
+            creatorId: decoded
         }
         const post = new postModel(postData);
         await post.save();
