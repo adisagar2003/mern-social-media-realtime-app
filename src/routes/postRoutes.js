@@ -1,6 +1,6 @@
 const express =require('express');
 const checkAdmin = require('../middlewares/checkAdmin');
-const { createPost, getPosts, likePost } = require('../controllers/postController');
+const { createPost, getPosts, likePost, getPostById } = require('../controllers/postController');
 const router  = express.Router();
 const multer  = require('multer');
 
@@ -16,6 +16,7 @@ const upload = multer({storage});
 
 router.get('/',getPosts);
 router.post('/like',likePost);
+router.get('/:id',getPostById);
 router.post('/',checkAdmin,upload.single('image'),createPost);
 
 

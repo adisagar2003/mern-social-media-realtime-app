@@ -11,6 +11,21 @@ module.exports={
         });
 
     },
+    getPostById: async(req,res)=>{
+        try{
+            const post = await postModel.findById(req.params.id);
+            res.status(200).json({
+            data:post,
+            response:'success'  
+            })
+        }
+        
+        catch(err){
+            res.status(400).json({
+                error:err.message
+            })
+        }
+    },
     createPost:async (req,res)=>{
         const token = req.headers.authorization.split(' ')[1];
         console.log(req.file);
@@ -45,6 +60,7 @@ module.exports={
         
     },
     likePost:async (req,res)=>{
+        try{
         const token = req.headers.authorization.split(' ')[1];
         var postId = req.body.postId;
         var post = await postModel.findById(postId);
@@ -66,5 +82,12 @@ module.exports={
             resposne:'success',
             data:post
         });
+
+    }
+    catch(err){
+        res.status(400).json({
+            error:err.message,
+            response:'error'
+        })    }
     }
 }
