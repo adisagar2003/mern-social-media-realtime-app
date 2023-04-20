@@ -88,6 +88,66 @@ module.exports={
         res.status(400).json({
             error:err.message,
             response:'error'
+        })    }},
+     likePost:async (req,res)=>{
+        try{
+        const token = req.headers.authorization.split(' ')[1];
+        var postId = req.body.postId;
+        var post = await postModel.findById(postId);
+        console.log(post);
+        const decoded = jwt.verify(token,'123',function(err,decoded){
+            if (err){
+                throw new Error(err);
+    
+            }else{
+                return decoded.userName;
+            }});
+        if (post.likes.indexOf(decoded)!=-1){
+
+        }else{
+            post.likes= [...post.likes,decoded]
+        }
+        await  post.save();
+        res.json({
+            resposne:'success',
+            data:post
+        });
+
+    }
+    catch(err){
+        res.status(400).json({
+            error:err.message,
+            response:'error'
         })    }
+    },
+    unlikePost:async (req,res)=>{
+        try{
+            const token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token,'123',function(err,decoded){
+                if (err){
+                    throw new Error(err);
+        
+                }else{
+                    return decoded.userName;
+                }});
+            var post = await postModel.findById(req.body.postId);
+            
+            if (post.likes.indexOf(decoded)!=-1){
+                post.likes.splice(decoded);
+                await post.save()
+            }else{
+                
+            }
+
+            res.status(200).json({
+                response:'success',
+                data:post
+            })
+            
+        }catch(err){
+            res.status(400).json({
+                error:err.message
+            })
+        }
     }
 }
