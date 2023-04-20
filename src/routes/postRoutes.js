@@ -1,20 +1,21 @@
 const express =require('express');
 const checkAdmin = require('../middlewares/checkAdmin');
-const { createPost, getPosts } = require('../controllers/postController');
+const { createPost, getPosts, likePost } = require('../controllers/postController');
 const router  = express.Router();
 const multer  = require('multer');
 
 var storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      cb(null, 'uploads/');
+        cb(null, 'uploads/');
     },
     filename: function(req, file, cb) {
-      cb(null, file.originalname + '-' + Date.now() + '.jpg');
+        cb(null, file.originalname + '-' + Date.now() + '.jpg');
     }
-  });
+    });
 const upload = multer({storage});
 
 router.get('/',getPosts);
+router.post('/like',likePost);
 router.post('/',checkAdmin,upload.single('image'),createPost);
 
 

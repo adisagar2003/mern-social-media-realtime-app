@@ -43,5 +43,28 @@ module.exports={
     },
     deletePost:async (req,res)=>{  
         
+    },
+    likePost:async (req,res)=>{
+        const token = req.headers.authorization.split(' ')[1];
+        var postId = req.body.postId;
+        var post = await postModel.findById(postId);
+        console.log(post);
+        const decoded = jwt.verify(token,'123',function(err,decoded){
+            if (err){
+                throw new Error(err);
+    
+            }else{
+                return decoded.userName;
+            }});
+        if (post.likes.indexOf(decoded)!=-1){
+
+        }else{
+            post.likes= [...post.likes,decoded]
+        }
+        await  post.save();
+        res.json({
+            resposne:'success',
+            data:post
+        });
     }
 }
