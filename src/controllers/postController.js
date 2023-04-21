@@ -1,6 +1,13 @@
 const postModel = require("../models/postModel")
 const jwt = require('jsonwebtoken');
-var path = require('path')
+var path = require('path');
+var fs = require('fs');
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
 module.exports={
     getPosts:async (req,res)=>{
 
@@ -31,6 +38,8 @@ module.exports={
         console.log(req.file);
         var fullUrl = req.protocol + '://' + req.get('host');
         console.log(`${fullUrl}/${req.file.path}`);
+        var fileBuffer = base64_encode(`./uploads/${req.file.filename}`);
+        console.log(fileBuffer);
         const decoded = jwt.verify(token,'123',function(err,decoded){
             if (err){
                 throw new Error(err);
@@ -46,7 +55,7 @@ module.exports={
             postHeading: req.body.postHeading,
             ownerName: req.body.ownerName,
             description:req.body.description,
-            imageSource:`${fullUrl}/${req.file.path}`,
+            imageSource:fileBuffer,
             creatorId: decoded
         }
         const post = new postModel(postData);
