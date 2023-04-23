@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 const checkAdmin= require('../middlewares/checkAdmin');
+const { followUser, unfollowUser } = require('../controllers/userController.js');
 
 
 //All users [ADMIN ONLY!]
@@ -25,6 +26,9 @@ router.get('/',checkAdmin,async (req,res)=>{
 })
 
 
+
+router.post('/follow', followUser);
+router.post('/unfollow',unfollowUser);
 
 //Registration Of User
 router.post('/register',async (req,res)=>{
