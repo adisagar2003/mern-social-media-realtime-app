@@ -14,17 +14,17 @@ const multer  = require('multer');
 const conversationModel = require("./models/conversationModel.js");
 const messageModel = require("./models/messageModel.js");
 const upload = multer({ dest: 'uploads/' });
- const server = http.createServer(app);
+const server = http.createServer(app);
+const path = require("path");
 require('dotenv').config();
 
 //Connecting database
 connectDb();
 
-
-
 //Passing Middlewares
 app.use(cors());
-app.use('/uploads',express.static('uploads'))
+app.use('/uploads',express.static('uploads'));
+app.use(express.static(__dirname + '/Web/dist/'));
 app.use(express.json());
 
 const io = new Server(server, {
@@ -34,6 +34,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"]
     }
  });
+
  io.on("connection",(socket)=>{
     socket.on('join', (room) => {
         console.log(`Socket ${socket.id} joining ${room}`);
@@ -55,9 +56,7 @@ app.get('/test',(req,res)=>{
     });
 });
 
-app.get('/',(req,res)=>{
-    res.send("<h1>Chat App Backend </h1>");
-})
+
 
 
 //Routes 
@@ -67,6 +66,11 @@ app.use('/auth',authRouter);
 app.use('/post', postRouter);
 app.use('/conversation',conversationRouter);
 app.use('/messages', messageRoutes);
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname +"/Web/dist"));
+});
+
 server.listen(process.env.PORT||3300, ()=>{
-    console.log("Listening at 😃", 3300, );
+    console.log("Listening at 😃", process.env.PORT );
 })
